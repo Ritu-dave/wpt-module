@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="jquery-3.5.1.min.js"></script>
+    <script>
+        $(document).ready(()=>{
+        console.log("loaded");
+        $('#bookid').blur(()=>{
+        console.log("blur event running");
+        let input = {bookid: $('#bookid').val()}
+        let parameterfunction = {
+        data: input,
+        url: 'http://localhost:500/getname',
+        type: 'get',
+        datatype: 'json',
+        success: function(dataserver){
+        console.log("success");
+        console.log(dataserver);
+        if(dataserver.status == true){
+            $('#bookname').val(dataserver.detail.bookname);
+            $('#price').val(dataserver.detail.price);
+            $('#msg').text("Book id found");
+        }  
+        else{
+
+            $('#bookname').val(" ");
+            $('#price').val(" ");
+            $('#msg').text("Book id not found");
+        }  
+
+        error: function(errorfromserver){
+            console.log("some error occoured" +errorfromserver);
+
+        }
+    }
+
+    $.ajax(parameterfunction);
+
+});    
+
+   
+        $('#update').click(()=>{
+        console.log("blur event running");
+        let input = {bookid: $('#bookid').val(), bookname: $('#bookname') price: $('#price').val()}
+        let parameterfunction = {
+        data: input,
+        url: 'http://localhost:500/updateall',
+        type: 'get',
+        datatype: 'json',
+        success: function(dataserver){
+        console.log("success");
+        console.log(dataserver);
+        if(dataserver.status == true){
+            $('#bookname').val(dataserver.detail.bookname);
+            $('#price').val(dataserver.detail.price);
+            $('#msg').text("updated");
+        }  
+        else{
+
+            $('#bookname').val(" ");
+            $('#price').val(" ");
+            $('#msg').text("not updated");
+        }  
+
+        error: function(errorfromserver){
+            console.log("some error occoured" +errorfromserver);
+
+        }
+    }
+
+    $.ajax(parameterfunction);
+
+
+
+
+        }   
+
+
+
+       
+
+    });
+
+
+
+
+    </script>
+</head>
+<body>
+    <label>Book id</label>
+    <input type="text" id="bookid" name="bookid"><br><br>
+
+<label>Book name</label>
+<input type="text" id="bookname" name="bookname">
+<span id="msg">?</span>
+<br><br>
+
+<label>Price</label>
+<input type="text" id="price" name="price"><br><br>
+
+<input type="button" id="update" name="button" value="update book">
+</body>
+</html>
